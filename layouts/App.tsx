@@ -1,7 +1,9 @@
 import React from 'react';
 
 const App = () => {
-    return <div>Sleact 시작</div>;
+
+    const Sleact = 'Sleact'
+    return <div>{Sleact}</div>;
 };
 
 export default App;
