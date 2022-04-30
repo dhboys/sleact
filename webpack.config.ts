@@ -75,12 +75,12 @@ const config: webpack.Configuration = {
   devServer: {
     historyApiFallback: true, // react router 에 필요한 설정
     port: 3090,
-    // proxy: {
-    //   '/api/': {
-    //     target: 'http://localhost:3095',
-    //     changeOrigin: true,
-    //   },
-    // },
+    proxy: {
+      '/api/': {
+        target: 'http://localhost:3095',
+        changeOrigin: true,
+      },
+    },
   },
 };
 

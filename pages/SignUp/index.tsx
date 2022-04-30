@@ -4,39 +4,57 @@ import React, { useCallback, useState } from "react";
 import { Success, Form, Error, Label, Input, LinkContainer, Button, Header } from "./styles";
 
 const SignUp = () => {
-  const [email, onChangeEmail] = useInput('');
-  const [nickname, onChangeNickname] = useInput('');
-  const [password, , setPassword] = useInput('');
-  const [passwordCheck, , setPasswordCheck] = useInput('');
+  const [email, onChangeEmail] = useInput("");
+  const [nickname, onChangeNickname] = useInput("");
+  const [password, , setPassword] = useInput("");
+  const [passwordCheck, , setPasswordCheck] = useInput("");
   const [mismatchError, setMismatchError] = useState(false);
+  const [signUpError, setSignUpError] = useState("");
+  const [signUpSuccess, setSignUpSuccess] = useState(false);
 
-  const onChangePassword = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-    setMismatchError(e.target.value !== passwordCheck);
-  }, [passwordCheck]);
+  const onChangePassword = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setPassword(e.target.value);
+      setMismatchError(e.target.value !== passwordCheck);
+    },
+    [passwordCheck],
+  );
 
-  const onChangePasswordCheck = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setPasswordCheck(e.target.value);
-    setMismatchError(e.target.value !== password);
-  }, [password]);
+  const onChangePasswordCheck = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setPasswordCheck(e.target.value);
+      setMismatchError(e.target.value !== password);
+    },
+    [password],
+  );
 
-  const onSubmit = useCallback((e: { preventDefault: () => void; }) => {
-    if (!mismatchError && nickname) {
-      console.log('서버로 회원가입하기');
-      axios.post('http://localhost:3095/api/users' , {
-        email,
-        nickname,
-        password,
-      })
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((error) => {
-          console.error(error.reponse);
-        })
-        .finally(() => {});
-    }
-  }, [email, nickname, password, passwordCheck, mismatchError]);
+  const onSubmit = useCallback(
+    (e: { preventDefault: () => void }) => {
+      e.preventDefault();
+      if (!mismatchError && nickname) {
+        console.log('서버로 회원가입');
+        // 요청 보내기 전에 초기화 시켜주는 것이 좋다.
+        setSignUpError('');
+        setSignUpSuccess(false);
+        axios
+          .post("/api/users", {
+            email,
+            nickname,
+            password,
+          })
+          .then((response) => {
+            console.log(response);
+            setSignUpSuccess(true);
+          })
+          .catch((error) => {
+            console.error(error.response.data);
+            setSignUpError(error.response.data);
+          })
+          .finally(() => {});
+      }
+    },
+    [email, nickname, password, passwordCheck, mismatchError],
+  );
 
   return (
     <div id="container">
@@ -73,8 +91,8 @@ const SignUp = () => {
           </div>
           {mismatchError && <Error>비밀번호가 일치하지 않습니다.</Error>}
           {!nickname && <Error>닉네임을 입력해주세요.</Error>}
-          {/* {signUpError && <Error>{signUpError}</Error>}
-          {signUpSuccess && <Success>회원가입되었습니다! 로그인해주세요.</Success>} */}
+          {signUpError && <Error>{signUpError}</Error>}
+          {signUpSuccess && <Success>회원가입되었습니다! 로그인해주세요.</Success>}
         </Label>
         <Button type="submit">회원가입</Button>
       </Form>
