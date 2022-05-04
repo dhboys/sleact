@@ -31,6 +31,9 @@ const LogIn = () => {
     [email, password],
   );
 
+  const [gitTest, setGitTest] = useState('');
+  console.log('gitTest', gitTest);
+
   return (
     <div id="container">
       <Header>Sleact</Header>
