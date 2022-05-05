@@ -34,6 +34,10 @@ const LogIn = () => {
     [email, password],
   );
 
+  if (data === undefined) {
+    return <div>Loading....</div>
+  }
+
   // mutate 후에 정보가 들어오면 실행하는 구문
   if (data !== false) {
     return <Navigate replace to="/workspace/channel" />

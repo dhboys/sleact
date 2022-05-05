@@ -1,10 +1,14 @@
 import useInput from "@hooks/useInput";
 import axios from "axios";
 import React, { useCallback, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { Success, Form, Error, Label, Input, LinkContainer, Button, Header } from "./styles";
+import useSWR from "swr";
+import fetcher from "@utils/fetcher";
 
 const SignUp = () => {
+  const { data, error, mutate } = useSWR('http://localhost:3095/api/users', fetcher);
+
   const [email, onChangeEmail] = useInput("");
   const [nickname, onChangeNickname] = useInput("");
   const [password, , setPassword] = useInput("");
@@ -56,6 +60,11 @@ const SignUp = () => {
     },
     [email, nickname, password, passwordCheck, mismatchError],
   );
+
+    // mutate 후에 정보가 들어오면 실행하는 구문
+    if (data !== false) {
+      return <Navigate replace to="/workspace/channel" />
+    }
 
   return (
     <div id="container">
