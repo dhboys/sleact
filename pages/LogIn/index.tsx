@@ -24,8 +24,9 @@ const LogIn = () => {
           },
         )
         .then((response) => {
-          // 성공 시 바로 호출
-          mutate();
+          // mutate는 query를 다시 날리지 않고 받아온 data를 이용한다.
+          // mutate(data, shouldRevalidate: 서버에 데이터를 점검)
+          mutate(response.data, false);
         })
         .catch((error) => {
           setLogInError(error.response?.data?.statusCode === 401);
