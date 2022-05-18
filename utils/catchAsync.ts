@@ -2,7 +2,7 @@ import React from "react";
 
 const catchAsync = async (fn: Promise<any>) => {
   try {
-    const responseData = await fn.then((result) => result).then((res) => res.data);
+    const responseData = await fn;
     return responseData;
   } catch (error) {
     console.error(error);
