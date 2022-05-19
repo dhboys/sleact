@@ -7,7 +7,7 @@ import useSWR from "swr";
 import fetcher from "@utils/fetcher";
 
 const SignUp = () => {
-  const { data, error, mutate } = useSWR('http://localhost:3095/api/users', fetcher);
+  const { data, error, mutate } = useSWR("http://localhost:3095/api/users", fetcher);
 
   const [email, onChangeEmail] = useInput("");
   const [nickname, onChangeNickname] = useInput("");
@@ -37,9 +37,9 @@ const SignUp = () => {
     (e: { preventDefault: () => void }) => {
       e.preventDefault();
       if (!mismatchError && nickname) {
-        console.log('서버로 회원가입');
+        // console.log('서버로 회원가입');
         // 요청 보내기 전에 초기화 시켜주는 것이 좋다.
-        setSignUpError('');
+        setSignUpError("");
         setSignUpSuccess(false);
         axios
           .post("/api/users", {
@@ -61,10 +61,10 @@ const SignUp = () => {
     [email, nickname, password, passwordCheck, mismatchError],
   );
 
-    // mutate 후에 정보가 들어오면 실행하는 구문
-    if (data !== false) {
-      return <Navigate replace to="/workspace/channel" />
-    }
+  // mutate 후에 정보가 들어오면 실행하는 구문
+  if (data !== false) {
+    return <Navigate replace to="/workspace/channel" />;
+  }
 
   return (
     <div id="container">
