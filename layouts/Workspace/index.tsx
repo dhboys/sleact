@@ -1,8 +1,11 @@
 import React, { FC, useCallback, useEffect } from 'react';
+import { Header, RightMenu, ProfileImg, WorkspaceWrapper, Workspaces, Channels, WorkspaceName, Chats, MenuScroll } from "@layouts/Workspace/styles";
 import axios from "axios";
 import useSWR from "swr";
 import fetcher from "@utils/fetcher";
 import { Navigate } from "react-router-dom";
+import gravatar from 'gravatar';
+
 
 const Workspace: FC<React.PropsWithChildren<{}>> = ({ children }) => {
     const { data, error, mutate } = useSWR('http://localhost:3095/api/users', fetcher, {
@@ -29,7 +32,24 @@ const Workspace: FC<React.PropsWithChildren<{}>> = ({ children }) => {
 
     return (
         <>
+        <Header>
+            <RightMenu>
+                <span>
+                    <ProfileImg src={gravatar.url(data?.email, { s: '28px', d: 'retro'})} alt={data?.email} />
+                </span>
+            </RightMenu>
+        </Header>
             <button onClick={onLogout}>로그아웃</button>
+            <WorkspaceWrapper>
+                <Workspaces>
+                    test
+                </Workspaces>
+                <Channels>
+                    <WorkspaceName>Sleact</WorkspaceName>
+                    <MenuScroll>menu scroll</MenuScroll>
+                </Channels>
+                <Chats>Chats</Chats>
+            </WorkspaceWrapper>
             {children}
         </>
     );
