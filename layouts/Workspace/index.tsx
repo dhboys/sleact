@@ -9,6 +9,8 @@ import {
   WorkspaceName,
   Chats,
   MenuScroll,
+  ProfileModal,
+  LogOutButton,
 } from "@layouts/Workspace/styles";
 import axios from "axios";
 import useSWR from "swr";
@@ -27,7 +29,7 @@ const Workspace: FC<React.PropsWithChildren<{}>> = ({ children }) => {
   });
 
   const [showUserMenu, setShowUserMenu] = useState(false);
-  // const [menuStyle, setMenuStyle] = useMemo(() => ({ right: 0, top: 38 }), []);
+  const menuStyles = useMemo(() => ({ right: 0, top: 38 }), []);
 
   const onLogout = useCallback(() => {
     axios
@@ -55,12 +57,21 @@ const Workspace: FC<React.PropsWithChildren<{}>> = ({ children }) => {
         <RightMenu>
           <span onClick={onClickUserProfile}>
             <ProfileImg src={gravatar.url(data?.email, { s: "28px", d: "retro" })} alt={data?.email} />
-            {showUserMenu && <Menu>프로필 메뉴</Menu>}
-            {/* style={menuStyle} show={showUserMenu} onCloseModal={onClickUserProfile} */}
+            {showUserMenu && 
+            (<Menu style={{ right: 0, top: 38 }} show={showUserMenu} onCloseModal={onClickUserProfile}>
+              <ProfileModal>
+                <img src={gravatar.url(data?.email, { s: "28px", d: "retro" })} alt={data?.email} />
+                <div>
+                  <span id="profile-name">{data?.nickname}</span>
+                  <span id="profile-active">Active</span>
+                </div>
+                <LogOutButton onClick={onLogout}>로그아웃</LogOutButton>
+              </ProfileModal>
+              
+              </Menu>)}
           </span>
         </RightMenu>
       </Header>
-      <button onClick={onLogout}>로그아웃</button>
       <WorkspaceWrapper>
         <Workspaces>test</Workspaces>
         <Channels>
